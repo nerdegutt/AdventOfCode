@@ -2,9 +2,6 @@ const { input } = require('./input.js');
 
 const itemTypes = [...'_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'];
 
-const a_code = 'a'.charCodeAt(0);
-const A_code = 'A'.charCodeAt(0);
-
 var first = '';
 var second = '';
 
