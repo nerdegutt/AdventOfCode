@@ -1,6 +1,6 @@
 const { input } = require('./input.js');
 
-const moves = input.toString().trim().split('\n').slice(0, 9999);
+const moves = input.toString().trim().split('\n').slice(0, 99999);
 
 /*//
 const moves = `
@@ -36,7 +36,10 @@ function getNextTailPosition([hx, hy], [tx, ty]) {
   let dx = hx - tx,
     dy = hy - ty;
   //console.log({ dx, dy });
-  if (dx > 1) {
+  if (Math.abs(dx) === 2 && Math.abs(dy) === 2) {
+    // Moved at an angle (for part 2)
+    return [tx + dx / 2, ty + dy / 2];
+  } else if (dx > 1) {
     // moved right
     return [++tx, ty + dy];
   } else if (dx < -1) {
@@ -122,6 +125,8 @@ moves.forEach((move, lineNumber) => {
         knots[0] = [knots[0][0], knots[0][1] - 1];
         break;
     }
+
+    // Helpers for plotting the path...
     if (knots[0][0] < minX) minX = knots[0][0];
     if (knots[0][0] > maxX) maxX = knots[0][0];
     if (knots[0][1] > maxY) maxY = knots[0][1];
@@ -130,11 +135,13 @@ moves.forEach((move, lineNumber) => {
     for (let k = 1; k < numberOfKnots; k++) {
       // let the tails follow
       knots[k] = getNextTailPosition(knots[k - 1], knots[k]);
-      kStack.add(knots[numberOfKnots - 1].join('X')); // Equal arrays in set will be considered different
-      //console.log(kStack.size);
     }
+    kStack.add(knots[numberOfKnots - 1].join('X')); // Equal arrays in set will be considered different
+    //console.log(kStack.size);
     /*//
     console.log(
+      direction,
+      '->',
       lineNumber,
       ++totalMoveCount,
       knots[0],
