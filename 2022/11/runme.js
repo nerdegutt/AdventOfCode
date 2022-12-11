@@ -33,8 +33,8 @@ Monkey 3:
 //**/
 
 let monkeys = [];
-const rounds = 20;
-const worryReductionFactor = 3;
+const rounds = 10000;
+const worryReductionFactor = 1;
 
 while (notes.length) {
   monkeys[notes.shift().split(' ')[1].split(':')[0]] = {
@@ -54,12 +54,13 @@ while (notes.length) {
   notes.shift();
 }
 
+const divider = monkeys.map((m) => m.testDivider).reduce((a, b) => a * b, 1);
 for (let r = 0; r < rounds; r++) {
   monkeys.forEach((monkey, index) => {
     let old;
     while ((old = monkey.startingItems.shift())) {
       let worryLevel = Math.floor(eval(monkey.operation) / worryReductionFactor);
-      //let worryLevel = eval(monkey.operation); // playing with part 2
+      worryLevel = worryLevel % divider; // Keeping numbers low by moduling by product of all dividers
       let receivingMonkey =
         0 === worryLevel % monkey.testDivider ? monkey.testTrue : monkey.testFalse;
       monkeys[receivingMonkey].startingItems.push(worryLevel);
@@ -82,9 +83,9 @@ const monkeyBusinessLevel = monkeys
   .reduce((sum, value) => sum * value, 1);
 
 const partOne = monkeyBusinessLevel;
-console.log('Part one: ', partOne);
+console.log('Part one: ', 'Change rounds and worryfactor');
 
 //------------------------------
 
-let partTwo;
+let partTwo = monkeyBusinessLevel;
 console.log('Part two: ', partTwo);
